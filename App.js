@@ -1,18 +1,26 @@
 import React from 'react';
-import { StyleSheet, Platform, Image, Text, View, ScrollView } from 'react-native';
+import {StyleSheet, Platform, Image, Text, View, ScrollView, TouchableOpacity} from 'react-native';
 
 import firebase from 'react-native-firebase';
 
 export default class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      // firebase things?
-    };
+    this.ref = firebase.firestore().collection('orders');
   }
 
-  componentDidMount() {
-    // firebase things?
+  getAllOrders() {
+    console.log('making get request');
+    this.ref.get()
+      .then(snapshot => {
+        console.log(snapshot);
+        snapshot.forEach(doc => {
+          console.log(doc.id, '=>', doc.data());
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
   }
 
   render() {
@@ -37,6 +45,11 @@ export default class App extends React.Component {
             Cmd+M or shake for dev menu
           </Text>
         )}
+        <View>
+          <TouchableOpacity onPress={() => this.getAllOrders()}>
+            <Text style={styles.button}>Get from FB</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.modules}>
           <Text style={styles.modulesHeader}>The following Firebase modules are enabled:</Text>
           {firebase.admob.nativeModuleExists && <Text style={styles.module}>Admob</Text>}
