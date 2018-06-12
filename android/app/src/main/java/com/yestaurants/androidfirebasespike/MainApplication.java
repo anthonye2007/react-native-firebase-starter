@@ -1,4 +1,4 @@
-package com.invertase.rnfirebasestarter;
+package com.yestaurants.androidfirebasespike;
 
 import android.app.Application;
 
