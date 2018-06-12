@@ -7,6 +7,9 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.ref = firebase.firestore().collection('orders');
+    this.state = {
+      lastOrderId: ''
+    }
   }
 
   getAllOrders() {
@@ -16,6 +19,7 @@ export default class App extends React.Component {
         console.log(snapshot);
         snapshot.forEach(doc => {
           console.log(doc.id, '=>', doc.data());
+          this.setState({ lastOrderId: doc.id });
         });
       })
       .catch(err => {
@@ -50,6 +54,9 @@ export default class App extends React.Component {
             <Text style={styles.button}>Get from FB</Text>
           </TouchableOpacity>
         </View>
+          <View>
+            <Text>{this.state.lastOrderId} </Text>
+          </View>
         <View style={styles.modules}>
           <Text style={styles.modulesHeader}>The following Firebase modules are enabled:</Text>
           {firebase.admob.nativeModuleExists && <Text style={styles.module}>Admob</Text>}
